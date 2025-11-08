@@ -4,7 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Scene: React.FC = () => {
+const Particles = () => {
   const particlesRef = useRef<THREE.Points>(null);
 
   const particles = useMemo(() => {
@@ -19,22 +19,33 @@ const Scene: React.FC = () => {
   useFrame((state) => {
     if (particlesRef.current) {
       particlesRef.current.rotation.y += 0.0005;
-      particlesRef.current.position.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.2;
-      particlesRef.current.position.y = Math.cos(state.clock.elapsedTime * 0.2) * 0.2;
+
+      // Mouse move effect
+      const targetX = state.mouse.x * 0.5;
+      const targetY = state.mouse.y * 0.5;
+
+      particlesRef.current.position.x = THREE.MathUtils.lerp(particlesRef.current.position.x, targetX, 0.01);
+      particlesRef.current.position.y = THREE.MathUtils.lerp(particlesRef.current.position.y, targetY, 0.01);
     }
   });
 
   return (
+    <Points ref={particlesRef} positions={particles} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#61dafb"
+        size={0.01}
+        sizeAttenuation={true}
+        depthWrite={false}
+      />
+    </Points>
+  );
+};
+
+const Scene: React.FC = () => {
+  return (
     <Canvas camera={{ position: [0, 0, 2] }}>
-      <Points ref={particlesRef} positions={particles} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#61dafb"
-          size={0.01}
-          sizeAttenuation={true}
-          depthWrite={false}
-        />
-      </Points>
+      <Particles />
     </Canvas>
   );
 };
