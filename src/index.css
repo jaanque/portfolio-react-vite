@@ -1,15 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Roboto+Mono&display=swap');
 
 :root {
-  --primary-color: #00aaff;
-  --background-color: #121212;
-  --text-color: #ffffff;
-  --card-background: #1e1e1e;
+  --primary-color: #61dafb;
+  --secondary-color: #ff3d8e;
+  --background-color: #0a0a0a;
+  --text-color: #e0e0e0;
+  --card-background: #1a1a1a;
+  --border-color: #2a2a2a;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   background-color: var(--background-color);
   color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: var(--background-color);
 }
