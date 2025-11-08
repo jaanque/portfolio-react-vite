@@ -4,12 +4,12 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     <header className="header">
-      <a href="#home" className="logo">MyPortfolio</a>
+      <a href="#home" className="logo magnetic-effect">MyPortfolio</a>
       <nav className="nav">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        <a href="#home" className="magnetic-effect">Home</a>
+        <a href="#about" className="magnetic-effect">About</a>
+        <a href="#projects" className="magnetic-effect">Projects</a>
+        <a href="#contact" className="magnetic-effect">Contact</a>
       </nav>
     </header>
   );

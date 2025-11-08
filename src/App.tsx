@@ -70,15 +70,52 @@ function App() {
         },
       });
 
-      // Hero text animation
-      const heroTitle = new SplitType('.hero-content h1', { types: 'chars' });
-      gsap.from(heroTitle.chars, {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        stagger: 0.05,
-        ease: 'power3.out',
-        delay: 2.5, // Adjusted delay
+      // Advanced staggered text reveals
+      gsap.utils.toArray('.reveal-text').forEach((el: HTMLElement) => {
+        const text = new SplitType(el, { types: 'chars, words' });
+        gsap.from(text.chars, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            end: 'top 60%',
+            scrub: true,
+          },
+          opacity: 0,
+          y: 20,
+          stagger: 0.05,
+        });
+      });
+
+      // Hero parallax effect
+      gsap.to('.hero-content', {
+        y: "-=50",
+        scrollTrigger: {
+          trigger: '.hero',
+          scrub: true,
+        },
+      });
+      gsap.to('.shape-1', {
+        y: "-=100",
+        scale: 1.2,
+        scrollTrigger: {
+          trigger: '.hero',
+          scrub: true,
+        },
+      });
+      gsap.to('.shape-2', {
+        y: "-=80",
+        scrollTrigger: {
+          trigger: '.hero',
+          scrub: true,
+        },
+      });
+      gsap.to('.shape-3', {
+        y: "-=120",
+        scale: 0.8,
+        scrollTrigger: {
+          trigger: '.hero',
+          scrub: true,
+        },
       });
 
       // Socials animation
@@ -137,6 +174,99 @@ function App() {
           });
         });
       });
+
+      // Magnetic UI elements
+      const magneticElements = gsap.utils.toArray('.magnetic-effect');
+      magneticElements.forEach((el: HTMLElement) => {
+        el.addEventListener('mousemove', (e) => {
+          const { clientX, clientY } = e;
+          const { left, top, width, height } = el.getBoundingClientRect();
+          const x = clientX - (left + width / 2);
+          const y = clientY - (top + height / 2);
+
+          gsap.to(el, {
+            x: x * 0.4,
+            y: y * 0.4,
+            duration: 0.8,
+            ease: 'elastic.out(1, 0.3)',
+          });
+        });
+
+        el.addEventListener('mouseleave', () => {
+          gsap.to(el, {
+            x: 0,
+            y: 0,
+            duration: 0.8,
+            ease: 'elastic.out(1, 0.3)',
+          });
+        });
+      });
+
+      // Canvas background animation
+      const canvas = document.getElementById('canvas-background') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      const particleCount = 100;
+
+      class Particle {
+        x: number;
+        y: number;
+        size: number;
+        speedX: number;
+        speedY: number;
+
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 1;
+          this.speedX = Math.random() * 0.5 - 0.25;
+          this.speedY = Math.random() * 0.5 - 0.25;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+
+          if (this.size > 0.1) this.size -= 0.01;
+        }
+        draw() {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function initParticles() {
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+      initParticles();
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+
+          if (particles[i].size <= 0.1) {
+            particles.splice(i, 1);
+            particles.push(new Particle());
+          }
+        }
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        initParticles();
+      });
     }, comp);
 
     return () => {
@@ -153,6 +283,7 @@ function App() {
       </div>
       <div className="cursor"></div>
       <div className="project-image-reveal"></div>
+      <canvas id="canvas-background"></canvas>
       <Header />
       <Hero />
       <Projects />

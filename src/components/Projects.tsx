@@ -27,13 +27,13 @@ const projectsData = [
 const Projects: React.FC = () => {
   return (
     <section id="projects" className="section">
-      <h2 className="heading">Featured <span>Projects</span></h2>
+      <h2 className="heading reveal-text">Featured <span>Projects</span></h2>
       <div className="projects-container-wrapper">
         <div className="projects-container">
           {projectsData.map((project, index) => (
             <div className="project-card" key={index} data-image={project.image}>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
+              <h3 className="reveal-text">{project.title}</h3>
+              <p className="reveal-text">{project.description}</p>
             </div>
           ))}
         </div>
