@@ -149,6 +149,14 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+.project-card-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 .cursor {
   display: none;
   position: fixed;
@@ -221,11 +229,12 @@
   color: var(--primary-color);
 }
 
-#canvas-background {
+.webgl-scene {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
+  opacity: 0.5;
 }
